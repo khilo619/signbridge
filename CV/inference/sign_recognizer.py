@@ -14,7 +14,6 @@ from .types import PredictionResult
 
 
 class SignRecognizer:
-<<<<<<< HEAD
     """Wrapper around the trained I3D model for easy prediction on clips.
 
     By default this uses the global CV.config paths for the checkpoint
@@ -34,14 +33,6 @@ class SignRecognizer:
             checkpoint_path=checkpoint_path,
             label_map_path=label_map_path,
             device=device,
-=======
-    """Wrapper around the trained I3D model for easy prediction on clips."""
-
-    def __init__(self, device: str | None = None) -> None:
-        # Load model + mappings using our loader
-        self.model, self.gloss_to_label, self.label_to_gloss = load_model_from_checkpoint(
-            device=device
->>>>>>> khaled
         )
         self.device = next(self.model.parameters()).device
 

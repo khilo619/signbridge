@@ -11,11 +11,13 @@ import torch
 from CV import config
 
 
-def _pad_or_sample_frames(frames: List[np.ndarray], target_num_frames: int) -> List[np.ndarray]:
+def _pad_or_sample_frames(
+    frames: List[np.ndarray], target_num_frames: int
+) -> List[np.ndarray]:
     """Pad or uniformly sample a list of frames to a fixed length.
 
-    - If len(frames) > target_num_frames: uniformly sample target_num_frames indices.
-    - If len(frames) < target_num_frames: repeat the last frame until the length matches.
+        - If len(frames) > target_num_frames: uniformly sample target_num_frames indices.
+        - If len(frames) < target_num_frames: repeat the last frame until the length matches.
     - If len(frames) == 0: raise ValueError.
     """
     num_frames = len(frames)
@@ -63,7 +65,9 @@ def preprocess_frames(
     for frame in frames:
         # OpenCV gives BGR; convert to RGB to match typical training convention
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frame = cv2.resize(frame, (image_size, image_size), interpolation=cv2.INTER_AREA)
+                frame = cv2.resize(
+            frame, (image_size, image_size), interpolation=cv2.INTER_AREA
+        )
         frame = frame.astype("float32") / 255.0  # scale to [0, 1]
         processed.append(frame)
 

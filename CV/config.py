@@ -5,6 +5,7 @@ model loading, preprocessing and inference.
 """
 
 import os
+
 import torch
 
 # Base directory for the repository
