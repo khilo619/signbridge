@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
 
+# This workflow syncs the repository to a Hugging Face Space.
+
 jobs:
   sync-to-hub:
     runs-on: ubuntu-latest
