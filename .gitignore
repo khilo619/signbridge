@@ -1,0 +1,98 @@
+# ===========================
+# SignBridge Monorepo .gitignore
+# Python + Next.js
+# ===========================
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.manifest
+*.spec
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Python env files
+.env
+.env.*
+!.env.example
+
+# Testing / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Type checking / Linting
+.mypy_cache/
+.ruff_cache/
+.pytype/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# --- Node / Next.js (apps/Web) ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# Next.js
+.next/
+out/
+
+# Vercel / Netlify
+.vercel/
+.netlify/
+
+# Next.js env files
+apps/Web/.env.local
+apps/Web/.env.*.local
+
+# --- IDEs ---
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# --- Logs ---
+*.log
+logs/
+
+# --- Build artifacts ---
+*.pth
+*.onnx
+*.pt
+
+# --- Large files (optional - uncomment if needed) ---
+# CV/checkpoints/
+# *.mp4
+# *.avi
+# *.mov
+
+# --- Misc ---
+coverage/
+.cache/
+tmp/
+temp/
