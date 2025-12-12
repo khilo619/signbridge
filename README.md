@@ -70,16 +70,120 @@ To support a stable production deployment, this project uses two primary Git rem
 
 ---
 
-## 4. Models & Checkpoints
+## 4. Repository Structure
 
-### 4.1. I3D Model Management with Git LFS
+A high-level view of the most relevant files and directories:
+
+```text
+NHA-057/
+├── .github/workflows/        # CI/CD pipeline definitions
+│   ├── test.yml              # Runs pytest on every push
+│   └── deploy.yml            # Syncs code to Hugging Face Spaces
+│
+├── api/                      # FastAPI backend (SignBridge API)
+│   ├── common/               # Shared utilities (health, schemas, video_io)
+│   └── sign_full/            # 100-class model API (main.py, routers.py, config.py)
+│
+├── CV/                       # Computer Vision module (I3D sign model)
+│   ├── config.py             # Central config (paths, device, num_classes, ...)
+│   ├── assets/               # Label mapping, config assets (e.g., label_mapping.json)
+│   ├── checkpoints/          # Model checkpoints (.pth) - managed by Git LFS
+│   ├── data/                 # Video reader & transforms
+│   ├── models/               # I3D and model loading utilities
+│   ├── inference/            # High-level SignRecognizer wrapper
+│   ├── training/             # Datasets and training scripts for I3D
+│   └── scripts/              # Utility scripts (e.g., webcam test)
+│
+├── notebooks/                # Main project notebooks (final workflows)
+│   ├── 01_sign_to_text.ipynb
+│   ├── 01_speech_to_text.ipynb
+│   └── 02_streaming_speech_to_text.ipynb
+│
+├── experiments/              # Archived / research experiments (not required for core app)
+│   ├── notebooks/            # Real-time sign + ISLR training notebooks, Colab notebooks
+│   └── wandb/                # Weights & Biases logs (ignored in typical deployments)
+│
+├── tests/                    # Unit and integration tests for the API
+│   └── conftest.py           # Pytest fixtures
+│
+├── configs/                  # JSON configs for data/training (if needed)
+│   ├── data_config.json
+│   └── train_config.json
+│
+├── .gitattributes            # Git LFS tracking rules for large model files
+├── requirements.txt          # Full development environment
+├── requirements-api.txt      # Minimal dependencies for the FastAPI inference service
+├── Dockerfile                # Containerization of the inference stack
+├── setup.sh / setup.bat      # Helper setup scripts
+└── README.md                 # This file
+```
+
+---
+
+## 5. Installation
+
+### 5.1. Prerequisites
+
+- **Python** >= 3.9
+- Recommended OS: Linux or Windows with a recent GPU driver (CPU also works, but slower).
+- (Optional) **CUDA-capable GPU** for faster video inference.
+- **Git LFS** for downloading the model checkpoint.
+
+### 5.2. Clone the repository
+
+```bash
+git clone https://github.com/khilo619/signbridge.git NHA-057
+cd NHA-057
+
+# Pull the model file from LFS
+git lfs pull
+```
+
+### 5.3. Install dependencies
+
+You can choose between the **full development environment** or the **minimal API environment**.
+
+#### Option A - Full environment (notebooks + training utilities + API)
+
+```bash
+pip install -r requirements.txt
+```
+
+This installs:
+
+- Core scientific stack (NumPy, Pandas, SciPy, etc.)
+- PyTorch, TensorFlow, Transformers
+- OpenCV, MediaPipe, and other CV utilities
+- Whisper, Vosk, and audio dependencies for speech processing
+- FastAPI + Uvicorn
+- Testing and misc utilities
+
+#### Option B - Minimal API environment
+
+If you only want to run the **FastAPI I3D inference service**:
+
+```bash
+pip install -r requirements-api.txt
+```
+
+This installs only what is needed for:
+
+- PyTorch I3D inference
+- Basic image/video handling
+- FastAPI + Uvicorn
+
+---
+
+## 6. Models & Checkpoints
+
+### 6.1. I3D Model Management with Git LFS
 
 The primary I3D model (`best_model_citizen100_87pct.pth`) is a large file (~149MB) and is managed using **Git LFS (Large File Storage)**.
 
 - **Tracking:** The `.gitattributes` file tells Git to handle all `*.pth` files in `CV/checkpoints/` with LFS.
 - **Automatic Download:** The FastAPI application is **self-healing**. If the model checkpoint is not found when the application starts, the `api.sign_full.dependencies.get_sign_recognizer` function will automatically download it from the Hugging Face Space repository. This ensures the application can always run, even in a fresh environment.
 
-### 4.2. Local Setup
+### 6.2. Local Setup
 
 To work with the model locally, you must have Git LFS installed.
 
@@ -96,11 +200,11 @@ git lfs pull
 
 ---
 
-## 5. FastAPI Inference Service
+## 7. FastAPI Inference Service
 
 The `api/` package exposes the **SignBridge API**, which is containerized using the provided `Dockerfile`.
 
-### 5.1. Running Locally
+### 7.1. Running Locally
 
 The deployed application is the `sign_full` API. To run it locally:
 
@@ -114,7 +218,7 @@ uvicorn api.sign_full.main:app --reload --host 0.0.0.0 --port 8000
 
 Interactive API documentation will be available at `http://localhost:8000/docs`.
 
-### 5.2. Docker
+### 7.2. Docker
 
 The `Dockerfile` packages the `sign_full` API for deployment. It is configured to use the `api.sign_full.main:app` entrypoint.
 
@@ -128,7 +232,7 @@ docker run --rm -p 7860:7860 signbridge-api
 
 ---
 
-## 6. Software Development & Automation
+## 8. Software Development & Automation
 
 This project follows modern software development practices to ensure code quality, reliability, and ease of deployment.
 
@@ -142,7 +246,7 @@ This level of automation minimizes manual errors, accelerates the development cy
 
 ---
 
-## 7. Datasets
+## 9. Datasets
 
 This project builds on publicly available datasets hosted on Kaggle:
 
