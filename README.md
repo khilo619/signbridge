@@ -81,41 +81,60 @@ NHA-057/
 │   └── deploy.yml            # Syncs code to Hugging Face Spaces
 │
 ├── api/                      # FastAPI backend (SignBridge API)
-│   ├── common/               # Shared utilities (health, schemas, video_io)
-│   └── sign_full/            # 100-class model API (main.py, routers.py, config.py)
+│   ├── common/               # Shared utilities
+│   │   ├── health.py         # Health check endpoint
+│   │   ├── schemas.py        # Pydantic models
+│   │   └── video_io.py       # Video I/O utilities
+│   └── sign_full/            # 100-class model API
+│       ├── main.py           # FastAPI app entry point
+│       ├── routers.py        # API routes
+│       ├── config.py         # Configuration
+│       └── dependencies.py  # Dependency injection
 │
 ├── CV/                       # Computer Vision module (I3D sign model)
 │   ├── config.py             # Central config (paths, device, num_classes, ...)
-│   ├── assets/               # Label mapping, config assets (e.g., label_mapping.json)
+│   ├── assets/               # Label mapping, config assets
 │   ├── checkpoints/          # Model checkpoints (.pth) - managed by Git LFS
 │   ├── data/                 # Video reader & transforms
 │   ├── models/               # I3D and model loading utilities
 │   ├── inference/            # High-level SignRecognizer wrapper
 │   ├── training/             # Datasets and training scripts for I3D
-│   └── scripts/              # Utility scripts (e.g., webcam test)
+│   └── scripts/              # Utility scripts (webcam test, etc.)
 │
-├── notebooks/                # Main project notebooks (final workflows)
+├── notebooks/                # Main project notebooks
 │   ├── 01_sign_to_text.ipynb
 │   ├── 01_speech_to_text.ipynb
-│   └── 02_streaming_speech_to_text.ipynb
+│   ├── 02_conversational_demo_seed.ipynb
+│   ├── 02_streaming_speech_to_text.ipynb
+│   └── 05_msasl_downloader.ipynb
 │
-├── experiments/              # Archived / research experiments (not required for core app)
-│   ├── notebooks/            # Real-time sign + ISLR training notebooks, Colab notebooks
-│   └── wandb/                # Weights & Biases logs (ignored in typical deployments)
+├── experiments/              # Archived experiments
+│   ├── notebooks/            # Research notebooks
+│   │   ├── 02_real-time_sign_to_text.ipynb
+│   │   ├── 02_real-time_sign_to_text_clean.ipynb
+│   │   ├── 02_real-time_sign_to_text_islr_combined.ipynb
+│   │   ├── 03_islr200_training_final.ipynb
+│   │   ├── 04_islr200_ultimate_training.ipynb
+│   │   └── colab_inference.ipynb
+│   └── wandb/                # Weights & Biases logs
 │
-├── tests/                    # Unit and integration tests for the API
-│   └── conftest.py           # Pytest fixtures
+├── tests/                    # Unit and integration tests
+│   ├── conftest.py           # Pytest fixtures
+│   ├── integration/           # Integration tests
+│   │   └── test_api_demo.py
+│   └── unit/                 # Unit tests
+│       └── test_model.py
 │
-├── configs/                  # JSON configs for data/training (if needed)
+├── configs/                  # JSON configs for data/training
 │   ├── data_config.json
 │   └── train_config.json
 │
-├── .gitattributes            # Git LFS tracking rules for large model files
+├── .gitattributes            # Git LFS tracking rules
 ├── requirements.txt          # Full development environment
-├── requirements-api.txt      # Minimal dependencies for the FastAPI inference service
-├── Dockerfile                # Containerization of the inference stack
-├── setup.sh / setup.bat      # Helper setup scripts
-└── README.md                 # This file
+├── requirements-api.txt      # Minimal API dependencies
+├── Dockerfile                # Containerization
+├── setup.sh                  # Setup script (Linux)
+└── setup.bat                 # Setup script (Windows)
 ```
 
 ---
@@ -252,4 +271,3 @@ This project builds on publicly available datasets hosted on Kaggle:
 
 - **MS-ASL** - A large-scale American Sign Language dataset.
   Kaggle: https://www.kaggle.com/datasets/nadayoussefamrawy/ms-asl
-
