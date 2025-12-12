@@ -1,21 +1,14 @@
 """
-<<<<<<< HEAD
 Local webcam demo using the 55-class demo I3D model (no remote API).
 
 This script mirrors the behavior of ``webcam_hf_client.py`` but runs
 inference locally via ``SignRecognizer`` instead of sending clips to
 the Hugging Face Space. It uses motion-based capture, debouncing, and
 an on-screen transcript to provide a smooth real-time experience.
-=======
-Local webcam demo for the I3D sign recognition model.
-
-Run this script to test the trained 100-class model on your webcam.
->>>>>>> khaled
 """
 
 from __future__ import annotations
 
-<<<<<<< HEAD
 import os
 import threading
 import time
@@ -36,8 +29,12 @@ CV_DIR = Path(__file__).resolve().parents[1]  # .../CV
 ASSETS_DIR = CV_DIR / "assets"
 CHECKPOINTS_DIR = CV_DIR / "checkpoints"
 
-os.environ.setdefault("SIGNBRIDGE_LABEL_MAP", str(ASSETS_DIR / "label_mapping_demo.json"))
-os.environ.setdefault("SIGNBRIDGE_CHECKPOINT", str(CHECKPOINTS_DIR / "demo_model_55class.pth"))
+os.environ.setdefault(
+    "SIGNBRIDGE_LABEL_MAP", str(ASSETS_DIR / "label_mapping_demo.json")
+)
+os.environ.setdefault(
+    "SIGNBRIDGE_CHECKPOINT", str(CHECKPOINTS_DIR / "demo_model_55class.pth")
+)
 
 from CV.inference.sign_recognizer import SignRecognizer
 
@@ -177,19 +174,25 @@ def draw_overlay(
         status_text += f"waiting ({time_to_next:.1f}s) / motion={motion_score:.1f}"
         status_color = color_ready
 
-    cv2.putText(overlay, status_text, (10, y), font, scale, status_color, thickness, cv2.LINE_AA)
+    cv2.putText(
+        overlay, status_text, (10, y), font, scale, status_color, thickness, cv2.LINE_AA
+    )
     y += 30
 
     # Current prediction
     if state.current_gloss is not None:
         pred_text = f"Current: {state.current_gloss} ({state.current_prob:.2f})"
-        cv2.putText(overlay, pred_text, (10, y), font, scale, color_ok, thickness, cv2.LINE_AA)
+        cv2.putText(
+            overlay, pred_text, (10, y), font, scale, color_ok, thickness, cv2.LINE_AA
+        )
         y += 30
 
     # Live capture length while capturing, otherwise show last capture length
     if capturing and capture_len > 0:
         capture_text = f"Capturing: {capture_len}/{CLIP_FRAMES} frames"
-        cv2.putText(overlay, capture_text, (10, y), font, 0.6, color_ready, 1, cv2.LINE_AA)
+        cv2.putText(
+            overlay, capture_text, (10, y), font, 0.6, color_ready, 1, cv2.LINE_AA
+        )
         y += 25
     elif (not capturing) and state.last_capture_len > 0:
         capture_text = f"Last capture: {state.last_capture_len}/{CLIP_FRAMES} frames"
@@ -209,41 +212,10 @@ def draw_overlay(
         cv2.putText(overlay, err_text, (10, y), font, 0.5, color_err, 1, cv2.LINE_AA)
 
     return overlay
-=======
-import cv2
-import threading
-from queue import Queue
-
-from CV import config
-from CV.data.video_reader import open_webcam, release_webcam
-from CV.inference.sign_recognizer import SignRecognizer
-
-
-def prediction_worker(recognizer, frame_queue: Queue) -> None:
-    """Worker thread that runs predictions on collected frames."""
-    while True:
-        frames = frame_queue.get()
-        if frames is None:  # Signal to stop
-            break
-        try:
-            result = recognizer.predict_clip(frames, topk=5)
-            print(
-                f"Prediction: {result.gloss} (label={result.label}, prob={result.probability:.2f})"
-            )
-            print(
-                "  Top-5: "
-                + ", ".join(
-                    f"{g} ({p:.2f})" for g, p in zip(result.topk_glosses, result.topk_probabilities)
-                )
-            )
-        except Exception as e:  # pylint: disable=broad-except
-            print(f"Prediction error: {e}")
->>>>>>> khaled
 
 
 def main() -> None:
     recognizer = SignRecognizer()
-<<<<<<< HEAD
 
     print("==============================")
     print(" SignBridge I3D Webcam Demo (55-class local model)")
@@ -357,60 +329,6 @@ def main() -> None:
     finally:
         cap.release()
         cv2.destroyAllWindows()
-=======
-    num_frames_per_clip = getattr(config, "NUM_FRAMES", 32)
-
-    print("==============================")
-    print(" SignBridge I3D Webcam Demo")
-    print("==============================")
-    print("Press 'q' in the video window to quit.")
-    print(f"Collecting {num_frames_per_clip} frames per clip before each prediction.\n")
-
-    cap = None
-    try:
-        cap = open_webcam(0)
-    except Exception as e:  # pylint: disable=broad-except
-        print(f"Error opening webcam: {e}")
-        return
-
-    # Start prediction worker thread
-    frame_queue = Queue(maxsize=1)
-    worker_thread = threading.Thread(target=prediction_worker, args=(recognizer, frame_queue), daemon=True)
-    worker_thread.start()
-
-    frames = []
-    window_name = "SignBridge - Webcam"
-
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            print("Failed to read frame from webcam. Exiting.")
-            break
-
-        # Show live preview
-        cv2.imshow(window_name, frame)
-
-        # Accumulate frames for the current clip
-        frames.append(frame)
-
-        if len(frames) >= num_frames_per_clip:
-            # Send frames to worker thread (non-blocking)
-            try:
-                frame_queue.put_nowait(frames.copy())
-            except:  # pylint: disable=bare-except
-                pass  # Skip if queue is full
-            frames = []
-
-        # Handle keypresses
-        key = cv2.waitKey(1) & 0xFF
-        if key == ord("q"):
-            break
-
-    frame_queue.put(None)  # Signal worker to stop
-    worker_thread.join(timeout=5)
-    release_webcam(cap)
-    cv2.destroyAllWindows()
->>>>>>> khaled
 
 
 if __name__ == "__main__":
