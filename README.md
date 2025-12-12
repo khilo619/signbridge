@@ -19,49 +19,68 @@ A **real-time sign language video call platform** that bridges communication bet
 ## Repository Structure (Monorepo)
 
 ```text
-signbridge/                         # Root (khilo619/signbridge)
+signbridge/ (root)
+├── .github/workflows/              # CI/CD
+│   ├── deploy.yml                  # Sync to Hugging Face
+│   └── test.yml                    # Pytest on push
+│
 ├── apps/
-│   └── Web/                        # Next.js video call app
-│       ├── pages/
-│       │   ├── index.js            # Home: create/join room + role selection
-│       │   ├── room/[roomId].js    # Video call room + sign recognition + STT
+│   └── Web/                        # Next.js web app
+│       ├── pages/                  # Next.js pages + API routes
+│       │   ├── index.js
+│       │   ├── room/[roomId].js
 │       │   └── api/
 │       │       ├── pusher/         # auth.js, trigger.js
 │       │       └── sign/           # predict.js, refine.js
-│       ├── styles/
+│       ├── styles/                 # globals.css
 │       ├── package.json
+│       ├── package-lock.json
 │       ├── next.config.js
 │       ├── tailwind.config.js
 │       ├── netlify.toml
+│       ├── jsconfig.json
 │       └── .env.example
 │
-├── api/                            # FastAPI backend (Python)
-│   ├── sign_full/                  # 100-class model API
+├── api/                            # FastAPI backend
+│   ├── common/                     # health, schemas, video_io
+│   ├── sign_full/                  # 100-class API (main, routers, config, deps)
 │   └── sign_demo/                  # 55-class demo API
 │
 ├── CV/                             # Computer Vision module
-│   ├── assets/                     # label_mapping.json
-│   ├── checkpoints/                # Model weights (.pth)
-│   ├── data/                       # Video reader, transforms
+│   ├── assets/                     # label mappings
+│   ├── checkpoints/                # model weights (.pth) via LFS
+│   ├── data/                       # video reader, transforms
 │   ├── models/                     # I3D architecture
 │   ├── inference/                  # SignRecognizer wrapper
-│   ├── training/                   # Training scripts
-│   └── scripts/                    # Webcam test, utilities
+│   ├── training/                   # training scripts
+│   └── scripts/                    # webcam test, utilities
 │
-├── notebooks/                      # Jupyter notebooks
-│   ├── 01_sign_to_text.ipynb       # Offline sign recognition
-│   ├── 01_speech_to_text.ipynb     # Speech recognition (experimental)
-│   └── 02_streaming_speech_to_text.ipynb
+├── notebooks/                      # Primary notebooks
+│   ├── 01_sign_to_text.ipynb
+│   ├── 01_speech_to_text.ipynb
+│   ├── 02_conversational_demo_seed.ipynb
+│   ├── 02_streaming_speech_to_text.ipynb
+│   └── 05_msasl_downloader.ipynb
 │
-├── experiments/                    # Archived research experiments
-├── configs/                        # JSON configs for training
+├── experiments/                    # Archived research
+│   ├── notebooks/                  # real-time / ISLR experiments
+│   └── wandb/                      # W&B logs
+│
 ├── tests/                          # Python tests
+│   ├── integration/                # test_api_demo.py
+│   └── unit/                       # test_model.py, test_sign_recognizer.py, test_transforms.py, test_types.py
 │
-├── requirements.txt                # Full Python environment
-├── requirements-api.txt            # Minimal API dependencies
+├── configs/                        # JSON configs
+│   ├── data_config.json
+│   └── train_config.json
+│
+├── docs/                           # Project docs (MD/PDF/Tex)
+├── manifests/                      # (empty placeholder)
+├── requirements.txt                # Full Python env
+├── requirements-api.txt            # Minimal API deps
 ├── pyproject.toml                  # Python project config
-├── Dockerfile                      # Container for API
-├── setup.sh / setup.bat            # Environment setup scripts
+├── Dockerfile                      # API container
+├── setup.sh / setup.bat            # Environment setup
 └── README.md                       # This file
 ```
 
