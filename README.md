@@ -8,6 +8,8 @@ pinned: true
 ---
 # SignBridge: Multimodal Sign & Speech to Text
 
+[![Hugging Face Deployment](https://github.com/khilo619/signbridge/actions/workflows/deploy.yml/badge.svg)](https://github.com/khilo619/signbridge/actions/workflows/deploy.yml)
+
 A production-ready research project for **word-level sign language recognition**, with experimental **speech-to-text** components for future multimodal fusion.  
 The current main deliverable focuses on **offline translation for word-level sign videos** using a high-accuracy **I3D video model** (deployed on Hugging Face) and an optional **FastAPI backend**. Speech-to-text pipelines live in notebooks as exploratory work and are **not yet integrated** into the main application.
 
@@ -62,7 +64,6 @@ To support a stable production deployment, this project uses two primary Git rem
 
 - **FastAPI Inference Service**
   - The primary deliverable is the `api.sign_full` application, which serves the 87.6% accuracy model.
-  - The `api.sign_demo` application is an experimental alternative and not the focus of the main deployment.
 
 - **Experimental Notebooks**
   - The repository contains notebooks for sign-to-text and speech-to-text as exploratory work. These are not part of the deployed application.
@@ -122,6 +123,29 @@ The `Dockerfile` packages the `sign_full` API for deployment. It is configured t
 docker build -t signbridge-api .
 
 # Run the container
-docker run --rm -p 8000:8000 signbridge-api
+docker run --rm -p 7860:7860 signbridge-api
 ```
+
+---
+
+## 6. Software Development & Automation
+
+This project follows modern software development practices to ensure code quality, reliability, and ease of deployment.
+
+- **Automated Testing (CI):** The repository is configured with a Continuous Integration pipeline that runs a full suite of unit and integration tests (`pytest`) on every commit. This acts as a safety net, preventing regressions and ensuring that new features do not break existing functionality.
+
+- **Automated Deployment (CD):** Upon successful completion of the test suite, a Continuous Deployment pipeline automatically syncs the application to Hugging Face Spaces. This GitOps-based approach means the deployed application is always a direct reflection of the tested and verified `main` branch.
+
+- **Infrastructure as Code:** The entire application environment is defined in the `Dockerfile`, ensuring that the development, testing, and production environments are consistent and reproducible.
+
+This level of automation minimizes manual errors, accelerates the development cycle, and provides confidence in the stability of the live application.
+
+---
+
+## 7. Datasets
+
+This project builds on publicly available datasets hosted on Kaggle:
+
+- **MS-ASL** - A large-scale American Sign Language dataset.
+  Kaggle: https://www.kaggle.com/datasets/nadayoussefamrawy/ms-asl
 
