@@ -7,8 +7,8 @@ Run with:
 from fastapi import FastAPI
 
 from api.common import health
-from .routers import router as sign_router
 
+from .routers import router as sign_router
 
 app = FastAPI(
     title="SignBridge API (100-class Full Model)",

@@ -3,6 +3,7 @@
 from functools import lru_cache
 
 from CV.inference.sign_recognizer import SignRecognizer
+
 from .config import CHECKPOINT_PATH, LABEL_MAP_PATH
 
 

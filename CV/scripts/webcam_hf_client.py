@@ -22,7 +22,6 @@ import cv2
 import numpy as np
 import requests
 
-
 # Deployed API / Hugging Face Space base URL (no trailing /docs)
 # Docs live at HF_BASE_URL + "/docs"; the API itself is rooted at HF_BASE_URL.
 # HF_BASE_URL = "https://khalood619-signbridge-demo-55.hf.space"  # 55-class demo (alt)

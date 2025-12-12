@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
+
 from api.sign_demo.main import app
-import pytest
 
 # Create a TestClient that wraps your FastAPI app
 client = TestClient(app)

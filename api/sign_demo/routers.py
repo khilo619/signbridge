@@ -10,8 +10,8 @@ from fastapi import APIRouter, File, HTTPException, UploadFile
 
 from api.common.schemas import SignPredictionResponse, TopKPrediction
 from api.common.video_io import read_video_frames
-from .dependencies import get_sign_recognizer
 
+from .dependencies import get_sign_recognizer
 
 router = APIRouter(prefix="/sign", tags=["sign-demo"])
 

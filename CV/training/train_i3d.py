@@ -31,8 +31,6 @@ inference pipeline (see `CV/models/loader.py`).
 from __future__ import annotations
 
 import argparse
-import json
-import os
 from pathlib import Path
 from typing import Dict, Tuple
 
@@ -43,7 +41,7 @@ from tqdm import tqdm
 
 from CV import config
 from CV.models.loader import create_model, load_label_mapping
-from CV.training.datasets import VideoDatasetConfig, VideoClassificationDataset
+from CV.training.datasets import VideoClassificationDataset, VideoDatasetConfig
 
 
 def parse_args() -> argparse.Namespace:

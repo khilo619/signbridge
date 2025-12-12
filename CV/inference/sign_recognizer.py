@@ -8,8 +8,9 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
-from CV.models.loader import load_model_from_checkpoint
 from CV.data.transforms import preprocess_frames
+from CV.models.loader import load_model_from_checkpoint
+
 from .types import PredictionResult
 
 

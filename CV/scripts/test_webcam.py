@@ -20,7 +20,6 @@ from typing import List, Optional
 import cv2
 import numpy as np
 
-
 # ---------------------------------------------------------------------------
 # Configure the demo seed (55-class) BEFORE importing CV modules
 # ---------------------------------------------------------------------------
@@ -37,7 +36,6 @@ os.environ.setdefault(
 )
 
 from CV.inference.sign_recognizer import SignRecognizer
-
 
 # Real-time configuration (mirroring webcam_hf_client.py)
 CLIP_FRAMES = 32          # number of frames per clip sent to the model

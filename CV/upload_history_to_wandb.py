@@ -3,9 +3,10 @@ Upload training history from saved checkpoint to Weights & Biases
 Retroactively log all training metrics for visualization
 """
 
+import os
+
 import torch
 import wandb
-import os
 
 # ============================================================
 # CONFIGURATION
@@ -29,8 +30,8 @@ print("="*60)
 
 checkpoint = torch.load(CHECKPOINT_PATH, map_location='cpu')
 
-print(f"✅ Checkpoint loaded successfully!")
-print(f"\n📦 Checkpoint contains:")
+print("✅ Checkpoint loaded successfully!")
+print("\n📦 Checkpoint contains:")
 for key in checkpoint.keys():
     print(f"   • {key}")
 
@@ -45,7 +46,7 @@ if not history:
     print("💡 The checkpoint might not have saved the history.")
     exit(1)
 
-print(f"\n📊 Found training history:")
+print("\n📊 Found training history:")
 print(f"   • Epochs trained: {len(history.get('train_loss', []))}")
 print(f"   • Best epoch: {checkpoint.get('epoch', 'Unknown')}")
 
@@ -57,7 +58,7 @@ if best_val_acc is None and 'val_acc' in history and history['val_acc']:
 if best_val_acc is not None:
     print(f"   • Best val accuracy: {best_val_acc:.2f}%")
 else:
-    print(f"   • Best val accuracy: Unknown")
+    print("   • Best val accuracy: Unknown")
 
 # ============================================================
 # INITIALIZE W&B
@@ -89,7 +90,7 @@ run = wandb.init(
     }
 )
 
-print(f"✅ W&B initialized!")
+print("✅ W&B initialized!")
 print(f"🌐 Dashboard: {run.get_url()}")
 
 # ============================================================
@@ -172,7 +173,7 @@ artifact = wandb.Artifact(
 artifact.add_file(CHECKPOINT_PATH)
 run.log_artifact(artifact)
 
-print(f"✅ All metrics uploaded successfully!")
+print("✅ All metrics uploaded successfully!")
 print(f"📊 Total epochs logged: {num_epochs}")
 print(f"🌐 View your training curves at: {run.get_url()}")
 
@@ -182,10 +183,10 @@ wandb.finish()
 print("\n" + "="*60)
 print("✅ UPLOAD COMPLETE!")
 print("="*60)
-print(f"\n🎉 Your training history is now on W&B!")
-print(f"📈 You can now visualize:")
-print(f"   • Training/Validation loss curves")
-print(f"   • Training/Validation accuracy curves")
-print(f"   • Learning rate schedule")
-print(f"   • Compare with future experiments")
+print("\n🎉 Your training history is now on W&B!")
+print("📈 You can now visualize:")
+print("   • Training/Validation loss curves")
+print("   • Training/Validation accuracy curves")
+print("   • Learning rate schedule")
+print("   • Compare with future experiments")
 print(f"\n🌐 Dashboard: https://wandb.ai/{wandb.api.default_entity()}/{PROJECT_NAME}")

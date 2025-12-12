@@ -1,6 +1,8 @@
-import torch
 import pytest
+import torch
+
 from CV.models.i3d import InceptionI3d
+
 
 def test_i3d_model_instantiation(demo_config):
     """

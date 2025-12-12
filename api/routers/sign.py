@@ -10,7 +10,6 @@ from api.dependencies.models import get_sign_recognizer
 from api.schemas.sign import SignPredictionResponse, TopKPrediction
 from api.utils.video_io import read_video_frames
 
-
 router = APIRouter(prefix="/sign", tags=["sign"])
 
 
