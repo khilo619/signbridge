@@ -1,15 +1,11 @@
-<<<<<<< HEAD
 ---
-title: SignBridge 55-Class Demo
-emoji: ✋
-colorFrom: indigo
+title: SignBridge API (100-Class)
+emoji: 🚀
+colorFrom: blue
 colorTo: green
 sdk: docker
-pinned: false
+pinned: true
 ---
-
-=======
->>>>>>> khaled
 # SignBridge: Multimodal Sign & Speech to Text
 
 A production-ready research project for **word-level sign language recognition**, with experimental **speech-to-text** components for future multimodal fusion.  
@@ -56,17 +52,9 @@ A high-level view of the most relevant files and directories:
 ```text
 NHA-057/
 ├── api/                      # FastAPI backend (SignBridge API)
-<<<<<<< HEAD
 │   ├── common/               # Shared utilities (health, schemas, video_io)
 │   ├── sign_full/            # 100-class model API (main.py, routers.py, config.py)
 │   └── sign_demo/            # 55-class demo model API (main.py, routers.py, config.py)
-=======
-│   ├── main.py               # FastAPI app entrypoint
-│   ├── routers/              # API routers (health, sign, ...)
-│   ├── dependencies/         # Shared dependencies
-│   ├── schemas/              # Pydantic models
-│   └── utils/                # Helper utilities
->>>>>>> khaled
 │
 ├── CV/                       # Computer Vision module (I3D sign model)
 │   ├── config.py             # Central config (paths, device, num_classes, ...)
@@ -246,7 +234,6 @@ The `api/` package exposes a **FastAPI app** named **SignBridge API** that wraps
 
 ### 6.1. Start the API server
 
-<<<<<<< HEAD
 From the project root, you can run either the **100-class full model** or the **55-class demo model**:
 
 ```bash
@@ -255,12 +242,6 @@ uvicorn api.sign_full.main:app --reload --host 0.0.0.0 --port 8000
 
 # 55-class demo model
 uvicorn api.sign_demo.main:app --reload --host 0.0.0.0 --port 8001
-=======
-From the project root:
-
-```bash
-uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
->>>>>>> khaled
 ```
 
 - The root endpoint returns a basic health message.
@@ -268,7 +249,6 @@ uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 
 ### 6.2. API overview
 
-<<<<<<< HEAD
 The API is organized into two subpackages under `api/`:
 
 - **`api.sign_full`** – 100-class model (87.6% accuracy)
@@ -283,15 +263,6 @@ from api.common import health
 from .routers import router as sign_router
 
 app = FastAPI(title="SignBridge API (100-class Full Model)", version="1.0.0")
-=======
-The main app is defined in `api/main.py`:
-
-```python
-from fastapi import FastAPI
-from api.routers import health, sign
-
-app = FastAPI(title="SignBridge API", version="0.1.0")
->>>>>>> khaled
 
 @app.get("/")
 def read_root():
