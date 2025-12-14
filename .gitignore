@@ -96,3 +96,6 @@ coverage/
 .cache/
 tmp/
 temp/
+
+# Local clones of external repos
+signbridge-models/

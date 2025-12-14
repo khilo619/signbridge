@@ -8,6 +8,7 @@ from fastapi import FastAPI
 
 from api.common import health
 
+from .dependencies import get_sign_recognizer
 from .routers import router as sign_router
 
 app = FastAPI(
@@ -15,6 +16,11 @@ app = FastAPI(
     version="1.0.0",
     description="Sign language recognition API using the 100-class I3D model.",
 )
+
+
+@app.on_event("startup")
+def _warm_up_model() -> None:
+    get_sign_recognizer()
 
 
 @app.get("/")
