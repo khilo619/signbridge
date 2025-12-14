@@ -33,7 +33,8 @@ class TestSignRecognizerPredictClip:
         
         assert result.gloss == "please"  # index 2 has highest prob (0.5)
         assert result.label == 2
-        assert abs(result.probability - 0.5) < 0.1  # softmax will change values
+        expected_prob = torch.softmax(mock_model.return_value[0], dim=0)[2].item()
+        assert result.probability == pytest.approx(expected_prob, rel=1e-3, abs=1e-3)
         assert len(result.topk_glosses) == 3
         assert len(result.topk_probabilities) == 3
 

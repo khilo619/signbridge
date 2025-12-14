@@ -96,3 +96,10 @@ coverage/
 .cache/
 tmp/
 temp/
+
+docs/
+experiments/wandb/
+manifests/
+
+# Local clones of external repos
+signbridge-models/
