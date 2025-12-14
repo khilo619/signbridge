@@ -1,3 +1,12 @@
+---
+title: SignBridge
+emoji: "🤟"
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+---
+
 # SignBridge
 
 A **real-time sign language video call platform** that bridges communication between deaf/hard-of-hearing users and hearing users.
