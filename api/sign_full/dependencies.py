@@ -20,6 +20,12 @@ def get_sign_recognizer() -> SignRecognizer:
     This function is self-healing: if the checkpoint file is not found, it
     will be downloaded from the Hugging Face Hub.
     """
+    hub_token = (
+        os.getenv("HF_TOKEN")
+        or os.getenv("HUGGINGFACE_HUB_TOKEN")
+        or os.getenv("HUGGINGFACE_HUB_API_TOKEN")
+    )
+
     model_repo_id = os.getenv("MODEL_REPO_ID", "KhaLood619/signbridge-models")
     model_revision = os.getenv("MODEL_REVISION", "v1.0.0")
     checkpoint_filename = os.getenv(
@@ -33,6 +39,12 @@ def get_sign_recognizer() -> SignRecognizer:
 
     checkpoint_path = CHECKPOINT_PATH
     if not os.path.exists(checkpoint_path):
+        if not hub_token:
+            raise RuntimeError(
+                "Missing Hugging Face token for private model download. "
+                "Set Space Secret 'HF_TOKEN' (or 'HUGGINGFACE_HUB_TOKEN') with read access "
+                "to the model repo."
+            )
         print(
             f"Checkpoint not found at {checkpoint_path}. "
             f"Downloading {checkpoint_filename} from {model_repo_id}@{model_revision}..."
@@ -41,11 +53,18 @@ def get_sign_recognizer() -> SignRecognizer:
             repo_id=model_repo_id,
             revision=model_revision,
             filename=checkpoint_filename,
+            token=hub_token,
         )
         print("Checkpoint download complete.")
 
     label_map_path = LABEL_MAP_PATH
     if not os.path.exists(label_map_path):
+        if not hub_token:
+            raise RuntimeError(
+                "Missing Hugging Face token for private label-map download. "
+                "Set Space Secret 'HF_TOKEN' (or 'HUGGINGFACE_HUB_TOKEN') with read access "
+                "to the model repo."
+            )
         print(
             f"Label map not found at {label_map_path}. "
             f"Downloading {label_map_filename} from {model_repo_id}@{model_revision}..."
@@ -54,6 +73,7 @@ def get_sign_recognizer() -> SignRecognizer:
             repo_id=model_repo_id,
             revision=model_revision,
             filename=label_map_filename,
+            token=hub_token,
         )
         print("Label map download complete.")
 
