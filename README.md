@@ -326,7 +326,7 @@ The I3D model is deployed on HuggingFace:
 
 ## 9) Future Work (from original plan)
 - Multimodal fusion: combine I3D outputs with speech (late fusion or cross-modal models).
-- Real-time sign recognition: lightweight pose/landmark pipelines (MediaPipe/OpenPose + BiLSTM/ST-GCN/TGCN).
+- Landmark model based sign recognition: lightweight pose/landmark pipelines (MediaPipe/OpenPose + BiLSTM/ST-GCN/TGCN).
 - Larger vocabularies and more languages: extend beyond 100 ASL glosses.
 - Training framework: richer config-driven experiments, more augmentation/ablation support in `CV/training`.
 
